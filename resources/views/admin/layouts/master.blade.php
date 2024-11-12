@@ -39,7 +39,7 @@
     <div id="app">
         <div class="main-wrapper main-wrapper-1">
             <div class="navbar-bg"></div>
-        
+
 
             @include('admin.layouts.sidebar')
 
@@ -68,6 +68,8 @@
     <script src="{{ asset('admin/assets/modules/nicescroll/jquery.nicescroll.min.js') }}"></script>
     <script src="{{ asset('admin/assets/js/stisla.js') }}"></script>
     <script src="{{ asset('admin/assets/js/toastr.min.js') }}"></script>
+    <script src="{{ asset('admin/assets/modules/upload-preview/assets/js/jquery.uploadPreview.min.js') }}"></script>
+
 
     <!-- JS Libraies -->
 
@@ -88,6 +90,18 @@
             @endforeach
         @endif
     </script>
+    <script>
+        $.uploadPreview({
+            input_field: "#image-upload", // Default: .image-upload
+            preview_box: "#image-preview", // Default: .image-preview
+            label_field: "#image-label", // Default: .image-label
+            label_default: "Choose File", // Default: Choose File
+            label_selected: "Change File", // Default: Change File
+            no_label: false, // Default: false
+            success_callback: null // Default: null
+        });
+    </script>
+    @stack('scripts')
 </body>
 
 </html>
