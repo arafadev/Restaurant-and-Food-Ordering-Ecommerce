@@ -188,6 +188,10 @@
             </li>
             <li class="menu-header">Starter</li>
 
+            
+            <li class=""><a class="nav-link" href="{{ route('admin.slider.index') }}"><i class="fas fa-images"></i>
+                <span>Slider</span></a></li>
+
         </ul>
 
 
