@@ -111,6 +111,7 @@ namespace App\Models{
  * @property int $status
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @method static \Database\Factories\WhyChooseUsFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|WhyChooseUs newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|WhyChooseUs newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|WhyChooseUs query()
