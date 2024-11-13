@@ -160,7 +160,6 @@
                 <!-- Authentication -->
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
-
                     <a href="#"
                         onclick="event.preventDefault();
                     this.closest('form').submit();"
@@ -188,14 +187,23 @@
             </li>
             <li class="menu-header">Starter</li>
 
-            
-            <li class=""><a class="nav-link" href="{{ route('admin.slider.index') }}"><i class="fas fa-images"></i>
-                <span>Slider</span></a></li>
 
-                
-            <li class=""><a class="nav-link" href="{{ route('admin.why-choose-us.index') }}"><i class="fas fa-images"></i>
-                <span>Why Choose Us</span></a></li>
+            <li class=""><a class="nav-link" href="{{ route('admin.slider.index') }}"><i
+                        class="fas fa-images"></i>
+                    <span>Slider</span></a></li>
 
+
+            <li class=""><a class="nav-link" href="{{ route('admin.why-choose-us.index') }}"><i
+                        class="fas fa-images"></i>
+                    <span>Why Choose Us</span></a></li>
+
+            <li class="dropdown">
+                <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-columns"></i>
+                    <span>Manage Restaurant</span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="{{ route('admin.category.index') }}" class="nav-link">Product Categories</a></li>
+                </ul>
+            </li>
         </ul>
 
 
