@@ -20,7 +20,7 @@ if (!function_exists('generateUniqueSlug')) {
         }
 
         return $slug;
-    }
+    }   
 }
 
 if (!function_exists('currencyPosition')) {

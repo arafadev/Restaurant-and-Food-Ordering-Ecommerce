@@ -205,8 +205,10 @@
                     <li><a href="{{ route('admin.product.index') }}" class="nav-link">Products</a></li>
                 </ul>
             </li>
-        </ul>
 
+            <li><a class="nav-link" href="{{ route('admin.setting.index') }}"><i class="fas fa-square"></i>
+                    <span>Settings</span></a></li>
+        </ul>
 
     </aside>
 </div>

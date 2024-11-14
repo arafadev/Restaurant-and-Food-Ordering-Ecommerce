@@ -60,12 +60,13 @@
                                 </p>
                                 <a class="title" href="{{ route('product.show' , $product->slug) }}">{{ $product->name }}</a>
                                 @if ($product->offer_price > 0)
-                                    ${{ $product->offer_price }}
-                                    <del>${{ $product->price }}</del>
+                                {{ currencyPosition($product->offer_price) }}
+                                <del>{{ currencyPosition($product->price) }}</del>
                                 @else
-                                    ${{ $product->price }}
+                                {{ currencyPosition($product->price) }}
                                 @endif
-                                <h5 class="price">${{ $product->price }} @if ($product->offer_price > 0) <del>${{ $product->offer_price }}</del> @endif</h5>
+                                <hr>
+                                {{-- <h5 class="price">${{ $product->price }} @if ($product->offer_price > 0) <del>${{ $product->offer_price }}</del> @endif</h5> --}}
                                 <ul class="d-flex flex-wrap justify-content-center">
                                     <li><a href="#" data-bs-toggle="modal" data-bs-target="#cartModal"><i
                                                 class="fas fa-shopping-basket"></i></a></li>
