@@ -1,8 +1,9 @@
 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><i class="fal fa-times"></i></button>
 
 
-<form action="">
+<form action="" id="modal_add_to_cart_form">
 
+    <input type="hidden" name="product_id" value="{{ $product->id }}">
     <div class="fp__cart_popup_img">
 
         <img src="{{ asset($product->thumb_image) }}" alt="{{ $product->name }}" class="img-fluid w-100">
@@ -70,7 +71,7 @@
             <div class="quentity_btn_area d-flex flex-wrapa align-items-center">
                 <div class="quentity_btn">
                     <button class="btn btn-danger decrement"><i class="fal fa-minus"></i></button>
-                    <input type="text" placeholder="1" value="1" id="quantity" readonly>
+                    <input type="text" placeholder="1" name="quantity" value="1" id="quantity" readonly>
                     <button class="btn btn-success increment"><i class="fal fa-plus"></i></button>
                 </div>
                 @if ($product->offer_price > 0)
@@ -82,63 +83,104 @@
             </div>
         </div>
         <ul class="details_button_area d-flex flex-wrap">
-            <li><a class="common_btn" href="#">add to cart</a></li>
+            {{-- <li><a class="common_btn" href="#">add to cart</a></li> --}}
+            <li><button type="submit" class="common_btn">Add To Cart</button></li>
         </ul>
     </div>
-    <script>
-        $(document).ready(function() {
-            $('input[name="product_size"]').on('change', function() {
-                updateTotalPrice();
-            });
 
-            $('input[name="product_option[]"]').on('change', function() {
-                updateTotalPrice();
-            });
+</form>
+<script>
+    $(document).ready(function() {
+        $('input[name="product_size"]').on('change', function() {
+            updateTotalPrice();
+        });
+
+        $('input[name="product_option[]"]').on('change', function() {
+            updateTotalPrice();
+        });
 
 
-            // Increment and decrement quantity
-            $('.increment').on('click', function(e) {
-                e.preventDefault();
+        // Increment and decrement quantity
+        $('.increment').on('click', function(e) {
+            e.preventDefault();
 
-                let quantity = $('#quantity');
-                let currentQuantity = parseFloat(quantity.val());
-                quantity.val(currentQuantity + 1);
+            let quantity = $('#quantity');
+            let currentQuantity = parseFloat(quantity.val());
+            quantity.val(currentQuantity + 1);
+            updateTotalPrice()
+
+        });
+        $('.decrement').on('click', function(e) {
+            e.preventDefault();
+
+            let quantity = $('#quantity');
+            let currentQuantity = parseFloat(quantity.val());
+            if (currentQuantity > 1) {
+                quantity.val(currentQuantity - 1);
                 updateTotalPrice()
-
-            });
-            $('.decrement').on('click', function(e) {
-                e.preventDefault();
-
-                let quantity = $('#quantity');
-                let currentQuantity = parseFloat(quantity.val());
-                if (currentQuantity > 1) {
-                    quantity.val(currentQuantity - 1);
-                    updateTotalPrice()
-                }
-            });
-
-            // Function to update total price based on selected options
-            function updateTotalPrice() {
-                let basePrice = parseFloat($('input[name="base_price"]').val());
-                let selectedSizePrice = 0;
-                let selectedOptionsPrice = 0;
-                let quantity = parseFloat($('#quantity').val());
-
-                // Calculate the selected size price
-                let selectedSize = $('input[name="product_size"][type="radio"]:checked');
-                if (selectedSize.length > 0) {
-                    selectedSizePrice = parseFloat(selectedSize.data("price"));
-                }
-
-                // Calculate selected options price
-                let selectedOptions = $('input[name="product_option[]"]:checked');
-                $(selectedOptions).each(function() {
-                    selectedOptionsPrice += parseFloat($(this).data("price"));
-                });
-
-                let totalPrice =( basePrice + selectedSizePrice + selectedOptionsPrice) * quantity;
-
-                $('#total_price').text("{{ config('settings.site_currency_icon') }}" + totalPrice);
             }
         });
-    </script>
+
+        // Function to update total price based on selected options
+        function updateTotalPrice() {
+            let basePrice = parseFloat($('input[name="base_price"]').val());
+            let selectedSizePrice = 0;
+            let selectedOptionsPrice = 0;
+            let quantity = parseFloat($('#quantity').val());
+
+            // Calculate the selected size price
+            let selectedSize = $('input[name="product_size"][type="radio"]:checked');
+            if (selectedSize.length > 0) {
+                selectedSizePrice = parseFloat(selectedSize.data("price"));
+            }
+
+            // Calculate selected options price
+            let selectedOptions = $('input[name="product_option[]"]:checked');
+            $(selectedOptions).each(function() {
+                selectedOptionsPrice += parseFloat($(this).data("price"));
+            });
+
+            let totalPrice = (basePrice + selectedSizePrice + selectedOptionsPrice) * quantity;
+
+            $('#total_price').text("{{ config('settings.site_currency_icon') }}" + totalPrice);
+        }
+        // Add to cart function
+        $("#modal_add_to_cart_form").on('submit', function(e) {
+            e.preventDefault();
+            // Validation
+            let selectedSize = $("input[name='product_size']");
+            if (selectedSize.length > 0) {
+                if ($("input[name='product_size']:checked").val() === undefined) {
+                    toastr.error('Please select a size');
+                    console.error('Please select a size');
+                    return;
+                }
+            }
+
+            let formData = $(this).serialize();
+            $.ajax({
+                method: 'POST',
+                url: '{{ route('add-to-cart') }}',
+                data: formData,
+                beforeSend: function() {
+                    $('.modal_cart_button').attr('disabled', true);
+                    $('.modal_cart_button').html(
+                        '<span class="spinner-border spinner-border-sm text-light" role="status" aria-hidden="true"></span> Loading...'
+                    )
+                },
+                success: function(response) {
+                    updateSidebarCart();
+                    toastr.success(response.message);
+                },
+                error: function(xhr, status, error) {
+                    let errorMessage = xhr.responseJSON.message;
+                    toastr.error(errorMessage);
+                },
+                complete: function() {
+                    $('.modal_cart_button').html('Add to Cart');
+                    $('.modal_cart_button').attr('disabled', false);
+                }
+            })
+        })
+    })
+</script>

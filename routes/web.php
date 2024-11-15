@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminAuthController;
+use App\Http\Controllers\Frontend\CartController;
 use App\Http\Controllers\Frontend\ProfileController;
 use App\Http\Controllers\Frontend\FrontendController;
 use App\Http\Controllers\Frontend\DashboardController;
@@ -31,13 +32,6 @@ Route::group(['middleware' => 'auth'], function () {
 
 
 });
-Route::get('/', [FrontendController::class, 'index'])->name('home');
-/** Show Product details page */
-Route::get('/product/{slug}', [FrontendController::class, 'showProduct'])->name('product.show');
-
-// Product Modal Route
-
-Route::get('/load-product-modal/{productId}', [FrontendController::class, 'loadProductModal'])->name('load-product-modal');
 
 // Route::middleware('auth')->group(function () {
 //     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -48,3 +42,13 @@ Route::get('/load-product-modal/{productId}', [FrontendController::class, 'loadP
 require __DIR__.'/auth.php';
 
 
+Route::get('/', [FrontendController::class, 'index'])->name('home');
+/** Show Product details page */
+Route::get('/product/{slug}', [FrontendController::class, 'showProduct'])->name('product.show');
+
+// Product Modal Route
+
+Route::get('/load-product-modal/{productId}', [FrontendController::class, 'loadProductModal'])->name('load-product-modal');
+
+// Add to cart routes
+Route::post('add-to-cart', [CartController::class, 'addToCart'])->name('add-to-cart');
