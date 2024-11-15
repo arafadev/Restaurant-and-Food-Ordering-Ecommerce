@@ -58,18 +58,18 @@
                                     <i class="far fa-star"></i>
                                     <span>145</span>
                                 </p>
-                                <a class="title" href="{{ route('product.show' , $product->slug) }}">{{ $product->name }}</a>
+                                <a class="title"
+                                    href="{{ route('product.show', $product->slug) }}">{{ $product->name }}</a>
                                 @if ($product->offer_price > 0)
-                                {{ currencyPosition($product->offer_price) }}
-                                <del>{{ currencyPosition($product->price) }}</del>
+                                    {{ currencyPosition($product->offer_price) }}
+                                    <del>{{ currencyPosition($product->price) }}</del>
                                 @else
-                                {{ currencyPosition($product->price) }}
+                                    {{ currencyPosition($product->price) }}
                                 @endif
                                 <hr>
                                 {{-- <h5 class="price">${{ $product->price }} @if ($product->offer_price > 0) <del>${{ $product->offer_price }}</del> @endif</h5> --}}
                                 <ul class="d-flex flex-wrap justify-content-center">
-                                    <li><a href="#" data-bs-toggle="modal" data-bs-target="#cartModal"><i
-                                                class="fas fa-shopping-basket"></i></a></li>
+                                    <li><a href="javascript:;" onclick="loadProductModal('{{ $product->id  }}')"><i class="fas fa-shopping-basket"></i></a></li>
                                     <li><a href="#"><i class="fal fa-heart"></i></a></li>
                                     <li><a href="#"><i class="far fa-eye"></i></a></li>
                                 </ul>

@@ -6,7 +6,7 @@
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, target-densityDpi=device-dpi" />
 
-        <meta name="csrf-token" content="{{ csrf_token() }}" />
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
 
     <title>FoodPark || Restaurant </title>
     <link rel="icon" type="image/png" href="{{ asset('images/favicon.png') }}">
@@ -129,16 +129,17 @@
             }
         @endif
 
-
-            // Set csrf at ajax header
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
+        // Set csrf at ajax header
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
     </script>
 
-@stack('scripts')
+    {{-- load global js --}}
+    @include('frontend.layouts.global-scripts')
+    @stack('scripts')
 </body>
 
 </html>
