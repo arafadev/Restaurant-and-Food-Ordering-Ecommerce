@@ -29,7 +29,6 @@
                 </del>
             @else
                 <input type="hidden" name="base_price" value="{{ $product->price }}">
-
                 {{ currencyPosition($product->price) }}
             @endif
 
@@ -74,20 +73,29 @@
                     <input type="text" placeholder="1">
                     <button class="btn btn-success"><i class="fal fa-plus"></i></button>
                 </div>
-                <h3>$320.00</h3>
+                @if ($product->offer_price > 0)
+                    <h3 id="total_price"> {{ currencyPosition($product->offer_price) }}
+                    </h3>
+                @else
+                    <h3 id="total_price">{{ currencyPosition($product->price) }}</h3>
+                @endif
             </div>
         </div>
         <ul class="details_button_area d-flex flex-wrap">
             <li><a class="common_btn" href="#">add to cart</a></li>
         </ul>
     </div>
-
     <script>
         $(document).ready(function() {
             $('input[name="product_size"]').on('change', function() {
                 updateTotalPrice();
             });
-            // Function to update total price base on selected options
+
+            $('input[name="product_option[]"]').on('change', function() {
+                updateTotalPrice();
+            });
+
+            // Function to update total price based on selected options
             function updateTotalPrice() {
                 let basePrice = parseFloat($('input[name="base_price"]').val());
                 let selectedSizePrice = 0;
@@ -98,8 +106,16 @@
                 if (selectedSize.length > 0) {
                     selectedSizePrice = parseFloat(selectedSize.data("price"));
                 }
-                alert(selectedSizePrice);
+
+                // Calculate selected options price
+                let selectedOptions = $('input[name="product_option[]"]:checked');
+                $(selectedOptions).each(function() {
+                    selectedOptionsPrice += parseFloat($(this).data("price"));
+                });
+
+                let totalPrice = basePrice + selectedSizePrice + selectedOptionsPrice;
+
+                 $('#total_price').text("{{ config('settings.site_currency_icon') }}" + totalPrice);
             }
         });
     </script>
-

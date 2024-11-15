@@ -13,7 +13,7 @@
                 $('#cartModal').modal('show')
             },
             error:function(xhr, status, error){
-                console.log(error);
+                alert(error)
             }
         });
     }
